@@ -104,7 +104,8 @@ class CartItems extends HTMLElement {
               },
             ],
           };
-          return fetch(`${routes.cart_url}/add.js`, {
+          console.log(freeProductData);
+          fetch(`${routes.cart_url}/add.js`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -113,7 +114,6 @@ class CartItems extends HTMLElement {
           })
             .then((responseProduct) => {
               console.log(responseProduct);
-              return responseProduct;
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -121,6 +121,7 @@ class CartItems extends HTMLElement {
         })
         .then((response) => response.text())
         .then((responseText) => {
+          console.log(responseText);
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
           for (const selector of selectors) {
