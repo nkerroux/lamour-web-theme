@@ -104,7 +104,7 @@ class CartItems extends HTMLElement {
               },
             ],
           };
-
+          console.log(window.Shopify.routes.root);
           fetch(window.Shopify.routes.root + 'cart/add.js', {
             method: 'POST',
             headers: {
@@ -113,6 +113,7 @@ class CartItems extends HTMLElement {
             body: JSON.stringify(freeProductData),
           })
             .then((response) => {
+              console.log(response);
               return response.json();
             })
             .catch((error) => {
