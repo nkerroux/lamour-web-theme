@@ -104,16 +104,16 @@ class CartItems extends HTMLElement {
               },
             ],
           };
-          fetch(`${routes.cart_url}/add.js`, {
+          return fetch(`${routes.cart_url}/add.js`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(freeProductData),
           })
-            .then((response) => {
-              console.log(response);
-              return response;
+            .then((responseProduct) => {
+              console.log(responseProduct);
+              return responseProduct;
             })
             .catch((error) => {
               console.error('Error:', error);
