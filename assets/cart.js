@@ -118,8 +118,8 @@ class CartItems extends HTMLElement {
             .catch((error) => {
               console.error('Error:', error);
             });
+          return response.text();
         })
-        .then((response) => response.text())
         .then((responseText) => {
           console.log(responseText);
           const html = new DOMParser().parseFromString(responseText, 'text/html');
