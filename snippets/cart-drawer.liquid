@@ -542,7 +542,9 @@
         <!-- Afficher le montant restant pour accéder à la livraison gratuite -->
 
         {%- if cart.total_price < 50 -%}
-          <div>Il vous reste {{ 50 - cart.total_price  | money_with_currency }} restants pour la livraison rapide</div>
+          <div>
+            Il vous reste {{ 50 | minus: cart.total_price | money_without_currency }} restants pour la livraison rapide
+          </div>
         {%- else -%}
           <div>Vous bénéficiez de la livraison gratuite.</div>
         {%- endif -%}
