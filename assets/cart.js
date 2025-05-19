@@ -94,7 +94,13 @@ class CartItems extends HTMLElement {
       // 2. On regare si le produit cadeau est présent ou non
       // 3. si ça n'est pas le cas, l'ajouter au panier
       fetch(`${routes.cart_url}`)
-        .then((response) => response.text())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Network response was not ok');
+          }
+          console.log(res);
+          return res.text();
+        })
         .then((responseText) => {
           console.log(responseText);
         })
