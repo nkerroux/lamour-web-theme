@@ -89,7 +89,6 @@ class CartItems extends HTMLElement {
 
   onCartUpdate() {
     if (this.tagName === 'CART-DRAWER-ITEMS') {
-      console.log(responseText);
       // EXO 1-3 : Ajouter produit gratuit à partir de 100€ d'achat
 
       // 1. On regarde si le montant du panier est >= à 100€
