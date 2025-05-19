@@ -105,7 +105,7 @@ class CartItems extends HTMLElement {
             ],
           };
           console.log(window.Shopify.routes.root);
-          fetch(window.Shopify.routes.root + 'cart/add.js', {
+          fetch(`${routes.cart_url}/add.js`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
