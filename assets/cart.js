@@ -92,6 +92,26 @@ class CartItems extends HTMLElement {
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
         .then((responseText) => {
+          // EXO 1-3 : Ajouter produit gratuit à partir de 100€ d'achat
+
+          fetch(routes.cart_url, { method: 'GET' })
+            .then((res) => {
+              if (!res.ok) {
+                throw new Error('Network response was not ok');
+              }
+              console.log('fetch cart_url ok');
+              return res.json();
+            })
+            .then((response) => {
+              console.log('Success:', response);
+              const cart = response;
+              // 1. On regare si le produit cadeau est présent ou non
+              // 2. si ça n'est pas le cas, l'ajouter au panier
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
           for (const selector of selectors) {
@@ -182,7 +202,8 @@ class CartItems extends HTMLElement {
 
           this.getSectionsToRender().forEach((section) => {
             const elementToReplace =
-              document.getElementById(section.id).querySelector(section.selector) || document.getElementById(section.id);
+              document.getElementById(section.id).querySelector(section.selector) ||
+              document.getElementById(section.id);
             elementToReplace.innerHTML = this.getSectionInnerHTML(
               parsedState.sections[section.section],
               section.selector
@@ -284,8 +305,9 @@ if (!customElements.get('cart-note')) {
           'input',
           debounce((event) => {
             const body = JSON.stringify({ note: event.target.value });
-            fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } })
-              .then(() => CartPerformance.measureFromEvent('note-update:user-action', event));
+            fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } }).then(() =>
+              CartPerformance.measureFromEvent('note-update:user-action', event)
+            );
           }, ON_CHANGE_DEBOUNCE_TIMER)
         );
       }
