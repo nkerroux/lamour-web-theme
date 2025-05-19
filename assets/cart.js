@@ -98,7 +98,11 @@ class CartItems extends HTMLElement {
           if (!res.ok) {
             throw new Error('Network response was not ok');
           }
-          console.log(res);
+          const res_content = res;
+          const res_json = res_content.json();
+          const res_text = res_content.text();
+          console.log(res_json);
+          console.log(res_text);
           return res.text();
         })
         .then((responseText) => {
