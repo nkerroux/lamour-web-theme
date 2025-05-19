@@ -90,22 +90,12 @@ class CartItems extends HTMLElement {
   onCartUpdate() {
     if (this.tagName === 'CART-DRAWER-ITEMS') {
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
-        .then((response) => response.text())
-        .then((responseText) => {
-          const html = new DOMParser().parseFromString(responseText, 'text/html');
-          const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
-          for (const selector of selectors) {
-            const targetElement = document.querySelector(selector);
-            const sourceElement = html.querySelector(selector);
-            if (targetElement && sourceElement) {
-              targetElement.replaceWith(sourceElement);
-            }
-          }
-
+        .then((response) => {
           // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
           // 1. On regarde si le montant du panier est >= à 100€
           // 2. On regare si le produit cadeau est présent ou non
           // 3. si ça n'est pas le cas, l'ajouter au panier
+
           let freeProductData = {
             items: [
               {
@@ -128,6 +118,18 @@ class CartItems extends HTMLElement {
             .catch((error) => {
               console.error('Error:', error);
             });
+        })
+        .then((response) => response.text())
+        .then((responseText) => {
+          const html = new DOMParser().parseFromString(responseText, 'text/html');
+          const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
+          for (const selector of selectors) {
+            const targetElement = document.querySelector(selector);
+            const sourceElement = html.querySelector(selector);
+            if (targetElement && sourceElement) {
+              targetElement.replaceWith(sourceElement);
+            }
+          }
         })
         .catch((e) => {
           console.error(e);
