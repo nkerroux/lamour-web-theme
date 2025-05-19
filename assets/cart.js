@@ -89,16 +89,31 @@ class CartItems extends HTMLElement {
 
   onCartUpdate() {
     if (this.tagName === 'CART-DRAWER-ITEMS') {
+      console.log(responseText);
+      // EXO 1-3 : Ajouter produit gratuit à partir de 100€ d'achat
+
+      // 1. On regarde si le montant du panier est >= à 100€
+      // 2. On regare si le produit cadeau est présent ou non
+      // 3. si ça n'est pas le cas, l'ajouter au panier
+
+      fetch(routes.cart_url, { method: 'GET' })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return res.json();
+        })
+        .then((response) => {
+          console.log('Success:', response);
+          const cart = response;
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
         .then((responseText) => {
-          console.log(responseText);
-          // EXO 1-3 : Ajouter produit gratuit à partir de 100€ d'achat
-
-          // 1. On regarde si le montant du panier est >= à 100€
-          // 2. On regare si le produit cadeau est présent ou non
-          // 3. si ça n'est pas le cas, l'ajouter au panier
-
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
           for (const selector of selectors) {
