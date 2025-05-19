@@ -539,7 +539,7 @@
           </small>
         </div>
 
-        <!-- Afficher le montant restant pour accéder à la livraison gratuite -->
+        <!-- EXO 1-1 : Afficher le montant restant pour obtenir à la livraison gratuite -->
 
         {% assign cart_total = cart.total_price %}
         {% assign remaining_goal = 5000 | minus: cart_total %}
@@ -548,6 +548,17 @@
           <div>Il vous reste {{ remaining_goal_formatted }} restants pour la livraison gratuite</div>
         {% else %}
           <div>Vous bénéficiez de la livraison gratuite.</div>
+        {% endif %}
+
+        <!-- EXO 1-2 : Afficher le montant restant pour obtenir au cadeau offert -->
+
+        {% assign cart_total = cart.total_price %}
+        {% assign remaining_goal = 10000 | minus: cart_total %}
+        {% if remaining_goal > 0 %}
+          {% assign remaining_goal_formatted = remaining_goal | money %}
+          <div>Il vous reste {{ remaining_goal_formatted }} restants pour obtenir un produit cadeau.</div>
+        {% else %}
+          <div>Vous avez obtenu un produit cadeau!</div>
         {% endif %}
 
         <!-- CTAs -->
