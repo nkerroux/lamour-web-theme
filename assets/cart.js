@@ -93,16 +93,12 @@ class CartItems extends HTMLElement {
       // 1. On regarde si le montant du panier est >= à 100€
       // 2. On regare si le produit cadeau est présent ou non
       // 3. si ça n'est pas le cas, l'ajouter au panier
-      var cart = fetch(`${routes.cart_url}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return res.json();
-        })
-        .catch((e) => {
-          console.error(e);
-        });
+      var cart = fetch(`${routes.cart_url}`).then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      });
 
       console.log(cart);
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
