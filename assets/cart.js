@@ -89,18 +89,6 @@ class CartItems extends HTMLElement {
 
   onCartUpdate() {
     if (this.tagName === 'CART-DRAWER-ITEMS') {
-      // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
-      // 1. On regarde si le montant du panier est >= à 100€
-      // 2. On regare si le produit cadeau est présent ou non
-      // 3. si ça n'est pas le cas, l'ajouter au panier
-      var cart = fetch(`${routes.cart_url}`).then((res) => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      });
-
-      console.log(cart);
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
         .then((responseText) => {
@@ -113,6 +101,33 @@ class CartItems extends HTMLElement {
               targetElement.replaceWith(sourceElement);
             }
           }
+
+          // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
+          // 1. On regarde si le montant du panier est >= à 100€
+          // 2. On regare si le produit cadeau est présent ou non
+          // 3. si ça n'est pas le cas, l'ajouter au panier
+          let freeProductData = {
+            items: [
+              {
+                id: 15071599132997,
+                quantity: 1,
+              },
+            ],
+          };
+
+          fetch(window.Shopify.routes.root + 'cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(freeProductData),
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
         })
         .catch((e) => {
           console.error(e);
