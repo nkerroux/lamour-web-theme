@@ -101,7 +101,7 @@ class CartItems extends HTMLElement {
       };
 
       // Récupération du panier
-      fetch(`${routes.cart_url}?section_id=cart-drawer`)
+      fetch(routes.cart_url)
         .then((response) => {
           // Récupération en json
           var cart = response.json();
