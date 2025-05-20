@@ -29,7 +29,37 @@ class CartItems extends HTMLElement {
 
   connectedCallback() {
     this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
+      // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
+      // 1. On regarde si le montant du panier est >= à 100€
+      // 2. On regare si le produit cadeau est présent ou non
+      // 3. si ça n'est pas le cas, l'ajouter au panier
+
       console.log('connectedCallback');
+
+      let formData = {
+        items: [
+          {
+            id: 15071599132997,
+            quantity: 1,
+          },
+        ],
+      };
+
+      fetch(routes.cart_add_url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      // --- --- ---
+
       if (event.source === 'cart-items') {
         return;
       }
@@ -89,35 +119,6 @@ class CartItems extends HTMLElement {
   }
 
   onCartUpdate() {
-    // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
-    // 1. On regarde si le montant du panier est >= à 100€
-    // 2. On regare si le produit cadeau est présent ou non
-    // 3. si ça n'est pas le cas, l'ajouter au panier
-
-    let formData = {
-      items: [
-        {
-          id: 36110175633573,
-          quantity: 2,
-        },
-      ],
-    };
-
-    fetch(cart_add_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    // --- --- ---
-
     if (this.tagName === 'CART-DRAWER-ITEMS') {
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
