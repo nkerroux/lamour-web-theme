@@ -97,7 +97,8 @@ class CartItems extends HTMLElement {
       let formData = {
         items: [
           {
-            id: 15071599132997,
+            id: 54766219952453,
+            product_id: 15071599132997,
             quantity: 1,
           },
         ],
