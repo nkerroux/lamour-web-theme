@@ -97,27 +97,34 @@ class CartItems extends HTMLElement {
           // 3. si ça n'est pas le cas, l'ajouter au panier
 
           let freeProductData = {
-            items: [
-              {
-                id: 15071599132997,
-                quantity: 1,
-              },
-            ],
+            id: 15071599132997,
+            quantity: 1,
           };
-          console.log(freeProductData);
-          fetch(`${routes.cart_url}/add.js`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(freeProductData),
-          })
-            .then((responseProduct) => {
-              console.log(responseProduct);
+
+          var url = '/cart.js';
+          fetch(url, { method: 'GET' })
+            .then((res) => res.json())
+            .then((responseCart) => {
+              console.log('Success:', JSON.stringify(responseCart));
+              const cart = responseCart;
+              // Add item to the cart:
+              var cartToken = cart.token;
+              var url = window.Shopify.routes.root + 'cart/add.js';
+              fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                },
+                body: JSON.stringify(freeProductData),
+              })
+                .then((res_add) => res_add.json())
+                .then((responseJson) => {
+                  console.log('Success:', JSON.stringify(responseJson));
+                })
+                .catch((error) => console.error('Error:', error));
             })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
+            .catch((error) => console.error('Error:', error));
           return response.text();
         })
         .then((responseText) => {
