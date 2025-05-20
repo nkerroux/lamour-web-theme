@@ -97,7 +97,7 @@ class CartItems extends HTMLElement {
           // 3. si ça n'est pas le cas, l'ajouter au panier
 
           let freeProductData = {
-            id: 15071599132997,
+            id: 15071573410117,
             quantity: 1,
           };
 
