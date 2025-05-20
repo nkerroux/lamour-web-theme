@@ -106,9 +106,11 @@ class CartItems extends HTMLElement {
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => {
           console.log(response);
+          let responseText = response.text();
           let responseJson = response.json();
+          console.log(responseText);
           console.log(responseJson);
-          return response.text();
+          return responseText;
         })
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
