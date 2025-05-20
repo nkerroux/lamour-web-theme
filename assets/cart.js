@@ -97,12 +97,18 @@ class CartItems extends HTMLElement {
           // 3. si ça n'est pas le cas, l'ajouter au panier
 
           let freeProductData = {
-            id: 15071573410117,
+            id: 15071599132997,
             quantity: 1,
           };
 
           var url = '/cart.js';
-          fetch(url, { method: 'GET' })
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+          })
             .then((res) => res.json())
             .then((responseCart) => {
               console.log('Success 1:', JSON.stringify(responseCart));
