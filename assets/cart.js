@@ -94,48 +94,28 @@ class CartItems extends HTMLElement {
       // 2. On regare si le produit cadeau est présent ou non
       // 3. si ça n'est pas le cas, l'ajouter au panier
 
-      const freeProductId = 15071599132997;
-      let freeProductData = {
-        id: freeProductId,
-        quantity: 1,
+      let formData = {
+        items: [
+          {
+            id: 15071599132997,
+            quantity: 1,
+          },
+        ],
       };
 
-      // Récupération du panier
-      fetch(routes.cart_url)
+      fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
         .then((response) => {
-          // Récupération en json
-          var cart = response.json();
-          console.log(cart);
-          let items = cart.items;
-          let free_item_in_cart_already = false;
-          // Vérification du panier
-          for (var i = 0; i < items.length; i++) {
-            if (items[i].product_id == freeProductId) {
-              free_item_in_cart_already = true;
-            }
-          }
-          console.log('free_item_in_cart_already : ' + free_item_in_cart_already);
-          // Pas besoin de l'ajouter si il y est déjà
-          if (!free_item_in_cart_already) {
-            // WIP : ajouter au panier
-            fetch(window.Shopify.routes.root + 'cart/add.js', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: JSON.stringify(freeProductData),
-            })
-              .then((res_add) => res_add.json())
-              .then((responseJson) => {
-                console.log('Success added:', JSON.stringify(responseJson));
-              })
-              .catch((error) => console.error('Error 1:', error));
-          }
-          return response.text();
+          console.log(response);
+          return response.json();
         })
-        .catch((e) => {
-          console.error(e);
+        .catch((error) => {
+          console.error('Error:', error);
         });
 
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
