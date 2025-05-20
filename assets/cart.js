@@ -105,7 +105,7 @@ class CartItems extends HTMLElement {
           fetch(url, { method: 'GET' })
             .then((res) => res.json())
             .then((responseCart) => {
-              console.log('Success:', JSON.stringify(responseCart));
+              console.log('Success 1:', JSON.stringify(responseCart));
               const cart = responseCart;
               // Add item to the cart:
               var cartToken = cart.token;
@@ -120,15 +120,14 @@ class CartItems extends HTMLElement {
               })
                 .then((res_add) => res_add.json())
                 .then((responseJson) => {
-                  console.log('Success:', JSON.stringify(responseJson));
+                  console.log('Success 2:', JSON.stringify(responseJson));
                 })
-                .catch((error) => console.error('Error:', error));
+                .catch((error) => console.error('Error 1:', error));
             })
-            .catch((error) => console.error('Error:', error));
+            .catch((error) => console.error('Error 2:', error));
           return response.text();
         })
         .then((responseText) => {
-          console.log(responseText);
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
           for (const selector of selectors) {
