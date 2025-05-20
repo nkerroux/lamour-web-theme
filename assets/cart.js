@@ -112,9 +112,7 @@ class CartItems extends HTMLElement {
     })
       .then((response) => {
         console.log(response);
-        let responseJson = response.json();
-        console.log(responseJson);
-        return responseJson;
+        return response;
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -124,6 +122,7 @@ class CartItems extends HTMLElement {
     if (this.tagName === 'CART-DRAWER-ITEMS') {
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => {
+          console.log(response);
           return response.text();
         })
         .then((responseText) => {
