@@ -110,8 +110,8 @@ class CartItems extends HTMLElement {
       body: JSON.stringify(formData),
     })
       .then((response) => {
-        let response = response.json();
-        console.log(response);
+        let responseJson = response.json();
+        console.log(responseJson);
         return responseJson;
       })
       .catch((error) => {
