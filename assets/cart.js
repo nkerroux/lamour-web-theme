@@ -105,6 +105,7 @@ class CartItems extends HTMLElement {
         .then((response) => {
           // Récupération en json
           cart = response.json();
+          console.log(cart);
           let items = cart.items;
           let free_item_in_cart_already = false;
           // Vérification du panier
