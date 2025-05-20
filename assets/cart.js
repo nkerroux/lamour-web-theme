@@ -104,7 +104,7 @@ class CartItems extends HTMLElement {
       fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => {
           // Récupération en json
-          cart = response.json();
+          var cart = response.json();
           console.log(cart);
           let items = cart.items;
           let free_item_in_cart_already = false;
