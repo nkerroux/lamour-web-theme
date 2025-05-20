@@ -101,37 +101,41 @@ class CartItems extends HTMLElement {
       };
 
       // Récupération du panier
-      let cart = $.getJSON('/cart.js');
-      cart.done(function () {
-        // Récupération en json
-        cart = cart.json();
-        let items = cart.items;
-        let free_item_in_cart_already = false;
-        // Vérification du panier
-        for (var i = 0; i < items.length; i++) {
-          if (items[i].product_id == freeProductId) {
-            free_item_in_cart_already = true;
+      fetch(`${routes.cart_url}?section_id=cart-drawer`)
+        .then((response) => {
+          // Récupération en json
+          cart = cart.json();
+          let items = cart.items;
+          let free_item_in_cart_already = false;
+          // Vérification du panier
+          for (var i = 0; i < items.length; i++) {
+            if (items[i].product_id == freeProductId) {
+              free_item_in_cart_already = true;
+            }
           }
-        }
-        console.log(free_item_in_cart_already);
-        // Pas besoin de l'ajouter si il y est déjà
-        if (!free_item_in_cart_already) {
-          // WIP : ajouter au panier
-          fetch(window.Shopify.routes.root + 'cart/add.js', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify(freeProductData),
-          })
-            .then((res_add) => res_add.json())
-            .then((responseJson) => {
-              console.log('Success added:', JSON.stringify(responseJson));
+          console.log('free_item_in_cart_already : ' + free_item_in_cart_already);
+          // Pas besoin de l'ajouter si il y est déjà
+          if (!free_item_in_cart_already) {
+            // WIP : ajouter au panier
+            fetch(window.Shopify.routes.root + 'cart/add.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: JSON.stringify(freeProductData),
             })
-            .catch((error) => console.error('Error 1:', error));
-        }
-      });
+              .then((res_add) => res_add.json())
+              .then((responseJson) => {
+                console.log('Success added:', JSON.stringify(responseJson));
+              })
+              .catch((error) => console.error('Error 1:', error));
+          }
+          return response.text();
+        })
+        .catch((e) => {
+          console.error(e);
+        });
 
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => {
