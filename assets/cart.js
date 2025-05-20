@@ -102,14 +102,26 @@ class CartItems extends HTMLElement {
       ],
     };
 
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ formData }),
+    })
+      .then((response) => {
+        console.log(response);
+        let responseJson = response.json();
+        console.log(responseJson);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+
     if (this.tagName === 'CART-DRAWER-ITEMS') {
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
-        .then((response) => {
-          console.log(response);
-          let responseJson = response.json();
-          console.log(responseJson);
-
-          const responseText = response.text();
+        .then((response) => response.text())
+        .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
           for (const selector of selectors) {
