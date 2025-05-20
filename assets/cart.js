@@ -93,11 +93,11 @@ class CartItems extends HTMLElement {
     // 2. On regare si le produit cadeau est présent ou non
     // 3. si ça n'est pas le cas, l'ajouter au panier
 
-    /* let formData = {
+    let formData = {
       items: [
         {
-          id: 15071599132997,
-          quantity: 1,
+          id: 36110175633573,
+          quantity: 2,
         },
       ],
     };
@@ -110,13 +110,11 @@ class CartItems extends HTMLElement {
       body: JSON.stringify(formData),
     })
       .then((response) => {
-        console.log(response);
-        let responseJson = response.json();
-        console.log(responseJson);
+        return response.json();
       })
-      .catch((e) => {
-        console.error(e);
-      }); */
+      .catch((error) => {
+        console.error('Error:', error);
+      });
     // --- --- ---
 
     if (this.tagName === 'CART-DRAWER-ITEMS') {
