@@ -97,9 +97,8 @@ class CartItems extends HTMLElement {
       let formData = {
         items: [
           {
-            id: 54766219952453,
-            product_id: 15071599132997,
-            quantity: 1,
+            id: 15071599132997,
+            quantity: 2,
           },
         ],
       };
@@ -112,9 +111,7 @@ class CartItems extends HTMLElement {
         body: JSON.stringify(formData),
       })
         .then((response) => {
-          let responseJson = response.json();
-          console.log(responseJson);
-          return responseJson;
+          return response.json();
         })
         .catch((error) => {
           console.error('Error:', error);
