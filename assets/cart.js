@@ -55,7 +55,7 @@ class CartItems extends HTMLElement {
           console.error('Error:', error);
         });
 
-      fetch(routes.cart_add_url, {
+      fetch(`${routes.cart_add_url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
