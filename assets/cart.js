@@ -36,6 +36,7 @@ class CartItems extends HTMLElement {
       fetch(url, { method: 'GET' })
         .then((res) => res.json())
         .then((response) => {
+          // console.log('Success:', JSON.stringify(response));
           const cart = response;
           console.log(response);
 
@@ -66,9 +67,7 @@ class CartItems extends HTMLElement {
                   'Content-Type': 'application/json',
                   Accept: 'application/json',
                 },
-                body: JSON.stringify({
-                  freeProductId: 1,
-                }),
+                body: JSON.stringify(formData),
               })
                 .then((res) => res.json())
                 .then((response) => {
