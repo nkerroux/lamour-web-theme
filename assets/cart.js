@@ -36,14 +36,6 @@ class CartItems extends HTMLElement {
 
       console.log('connectedCallback');
 
-      // config.body = formData;
-      // fetch(`${routes.cart_add_url}`, config)
-      //     .then((response) => response.json())
-      //     .then((response) => {})
-      //     .catch((error) => {
-      //       console.error('Error:', error);
-      //     });
-
       let formData = {
         items: [
           {
@@ -53,12 +45,20 @@ class CartItems extends HTMLElement {
         ],
       };
 
+      config.body = JSON.stringify(formData);
+      fetch(`${routes.cart_add_url}`, config)
+        .then((response) => response.json())
+        .then((response) => {})
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
       fetch(routes.cart_add_url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(formData),
       })
         .then((response) => {
           console.log(response);
