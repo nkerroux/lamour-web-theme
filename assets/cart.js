@@ -64,10 +64,6 @@ class CartItems extends HTMLElement {
       })
         .then((response) => {
           console.log(response);
-          return response.json();
-        })
-        .then((response) => {
-          console.log(response);
         })
         .catch((error) => {
           console.error('Error:', error);
