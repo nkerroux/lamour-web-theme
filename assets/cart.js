@@ -61,7 +61,7 @@ class CartItems extends HTMLElement {
                 ],
               };
 
-              fetch('/cart/add.js', {
+              fetch(routes.cart_change_url, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
