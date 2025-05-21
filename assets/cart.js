@@ -40,8 +40,12 @@ class CartItems extends HTMLElement {
       fetch(url, { method: 'GET' })
         .then((res) => res.json())
         .then((response) => {
-          console.log('Success:', JSON.stringify(response));
+          // console.log('Success:', JSON.stringify(response));
           const cart = response;
+          console.log(response);
+
+          // 1. On regarde si le montant du panier est >= à 100€
+
           // Add item to the cart:
           // var cartToken = cart.token;
           // var url = window.Shopify.routes.root + 'cart/add.js';
