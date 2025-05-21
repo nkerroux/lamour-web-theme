@@ -30,11 +30,7 @@ class CartItems extends HTMLElement {
   connectedCallback() {
     this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
       // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
-      // 1. On regarde si le montant du panier est >= à 100€
-      // 2. On regare si le produit cadeau est présent ou non
-      // 3. si ça n'est pas le cas, l'ajouter au panier
-
-      console.log('connectedCallback');
+      const freeProductId = 15071517212997;
 
       var url = '/cart.js';
       fetch(url, { method: 'GET' })
@@ -45,65 +41,43 @@ class CartItems extends HTMLElement {
           console.log(response);
 
           // 1. On regarde si le montant du panier est >= à 100€
+          if (cart.total_price >= 10000) {
+            // 2. On regare si le produit cadeau est présent ou non
+            var productFound = false;
+            for (let item of cart.items) {
+              if (item.id == freeProductId) {
+                productFound = true;
+              }
+            }
 
-          // Add item to the cart:
-          // var cartToken = cart.token;
-          // var url = window.Shopify.routes.root + 'cart/add.js';
-          // fetch(url, {
-          //   method: 'POST',
-          //   headers:{
-          //     'Content-Type': 'application/json',
-          //     'Accept': 'application/json'
-          //   },
-          //   body: JSON.stringify(variantData)
-          //   })
-          //   .then(res => res.json())
-          //   .then(response => {
-          //     console.log('Success:', JSON.stringify(response))
-          //   })
-          //   .catch(error => console.error('Error:', error));
+            // 3. Si il n'est pas présent, l'ajouter au panier
+            if (!productFound) {
+              let formData = {
+                items: [
+                  {
+                    id: freeProductId,
+                    quantity: 1,
+                  },
+                ],
+              };
+
+              fetch('/cart/add.js', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                },
+                body: JSON.stringify(formData),
+              })
+                .then((res) => res.json())
+                .then((response) => {
+                  console.log('Success:', JSON.stringify(response));
+                })
+                .catch((error) => console.error('Error:', error));
+            }
+          }
         })
         .catch((error) => console.error('Error:', error));
-
-      // fetch(`${routes.cart_url}`)
-      //   .then((response) => response.json())
-      //   .then((responseJson) => {
-      //     console.log(responseJson);
-      //   })
-      //   .catch((e) => {
-      //     console.error(e);
-      //   });
-
-      // --- --- ---
-
-      let formData = {
-        items: [
-          {
-            id: 15071517212997,
-            quantity: 1,
-          },
-        ],
-      };
-
-      // fetch(`${routes.cart_add_url}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     Accept: 'application/json',
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(formData),
-      // })
-      //   .then((response) => {
-      //     console.log(response);
-      //     return response.json();
-      //   })
-      //   .then((responseJson) => {
-      //     console.log(responseJson);
-      //   })
-      //   .catch((error) => {
-      //     console.error('Error:', error);
-      //   });
-      // --- --- ---
 
       if (event.source === 'cart-items') {
         return;
