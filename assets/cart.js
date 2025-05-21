@@ -36,6 +36,17 @@ class CartItems extends HTMLElement {
 
       console.log('connectedCallback');
 
+      fetch(`${routes.cart_url}`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log(responseJson);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      // --- --- ---
+
       let formData = {
         items: [
           {
