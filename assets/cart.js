@@ -36,14 +36,39 @@ class CartItems extends HTMLElement {
 
       console.log('connectedCallback');
 
-      fetch(`${routes.cart_url}`)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          console.log(responseJson);
+      var url = '/cart.js';
+      fetch(url, { method: 'GET' })
+        .then((res) => res.json())
+        .then((response) => {
+          console.log('Success:', JSON.stringify(response));
+          const cart = response;
+          // Add item to the cart:
+          // var cartToken = cart.token;
+          // var url = window.Shopify.routes.root + 'cart/add.js';
+          // fetch(url, {
+          //   method: 'POST',
+          //   headers:{
+          //     'Content-Type': 'application/json',
+          //     'Accept': 'application/json'
+          //   },
+          //   body: JSON.stringify(variantData)
+          //   })
+          //   .then(res => res.json())
+          //   .then(response => {
+          //     console.log('Success:', JSON.stringify(response))
+          //   })
+          //   .catch(error => console.error('Error:', error));
         })
-        .catch((e) => {
-          console.error(e);
-        });
+        .catch((error) => console.error('Error:', error));
+
+      // fetch(`${routes.cart_url}`)
+      //   .then((response) => response.json())
+      //   .then((responseJson) => {
+      //     console.log(responseJson);
+      //   })
+      //   .catch((e) => {
+      //     console.error(e);
+      //   });
 
       // --- --- ---
 
