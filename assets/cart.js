@@ -59,7 +59,7 @@ class CartItems extends HTMLElement {
                 ],
               };
 
-              fetch(routes.cart_change_url, {
+              fetch(routes.cart_add_url, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -70,9 +70,8 @@ class CartItems extends HTMLElement {
                 .then((res) => res.json())
                 .then((response) => {
                   console.log(response);
-                  console.log('Success 2:', JSON.stringify(response));
                 })
-                .catch((error) => console.error('Error 2:', error));
+                .catch((error) => console.error('Error:', error));
             }
           }
         })
