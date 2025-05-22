@@ -30,7 +30,7 @@ class CartItems extends HTMLElement {
   connectedCallback() {
     this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
       // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
-      const freeProductId = 15071517212997;
+      const freeProductId = 15071599132997;
 
       var url = '/cart.js';
       fetch(url, { method: 'GET' })
