@@ -27,9 +27,9 @@ class CartItems extends HTMLElement {
 
   cartUpdateUnsubscriber = undefined;
 
+  // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
   addFreeProduct() {
-    // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
-    const freeProductId = 54770955845957;
+    // Datas à envoyer
     let formData = {
       items: [
         {
@@ -120,16 +120,11 @@ class CartItems extends HTMLElement {
             })
             .catch((error) => console.error('Error:', error));
         }
-
-        // Rafaichissement du panier
-        const this_cartDrawer = document.querySelector('cart-drawer');
-        this_cartDrawer.refresh(true);
       })
       .catch((error) => console.error('Error:', error));
   }
 
   connectedCallback() {
-    // this.addFreeProduct();
     this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
       if (event.source === 'cart-items') {
         return;
@@ -186,17 +181,17 @@ class CartItems extends HTMLElement {
   }
 
   onChange(event) {
-    this.addFreeProduct();
     this.validateQuantity(event);
   }
 
   onCartUpdate() {
     if (this.tagName === 'CART-DRAWER-ITEMS') {
-      return fetch(`${routes.cart_url}?section_id=cart-drawer`)
+      var fetchCartDrawer = fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
+
           for (const selector of selectors) {
             const targetElement = document.querySelector(selector);
             const sourceElement = html.querySelector(selector);
@@ -208,8 +203,9 @@ class CartItems extends HTMLElement {
         .catch((e) => {
           console.error(e);
         });
+      return fetchCartDrawer;
     } else {
-      return fetch(`${routes.cart_url}?section_id=main-cart-items`)
+      var fetchCartItems = fetch(`${routes.cart_url}?section_id=main-cart-items`)
         .then((response) => response.text())
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
@@ -219,6 +215,7 @@ class CartItems extends HTMLElement {
         .catch((e) => {
           console.error(e);
         });
+      return fetchCartItems;
     }
   }
 
