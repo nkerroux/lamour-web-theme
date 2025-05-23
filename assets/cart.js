@@ -27,56 +27,110 @@ class CartItems extends HTMLElement {
 
   cartUpdateUnsubscriber = undefined;
 
-  connectedCallback() {
-    this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
-      // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
-      const freeProductId = 15071599132997;
+  addFreeProduct() {
+    // EXO 1-3 : Ajouter un produit gratuit à partir de 100€ d'achat
+    const freeProductId = 54770955845957;
+    let formData = {
+      items: [
+        {
+          id: 54770955845957,
+          quantity: 1,
+        },
+      ],
+    };
 
-      var url = '/cart.js';
-      fetch(url, { method: 'GET' })
-        .then((res) => res.json())
-        .then((response) => {
-          const cart = response;
-
-          // 1. On regarde si le montant du panier est >= à 100€
-          if (cart.total_price >= 10000) {
-            // 2. On regare si le produit cadeau est présent ou non
-            var productFound = false;
-            for (let item of cart.items) {
-              if (item.id == freeProductId) {
-                productFound = true;
-              }
-            }
-
-            // 3. Si il n'est pas présent, l'ajouter au panier
-            if (!productFound) {
-              let formData = {
-                items: [
-                  {
-                    id: freeProductId,
-                    quantity: 1,
-                  },
-                ],
-              };
-
-              fetch(routes.cart_add_url, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                },
-                body: JSON.stringify(formData),
-              })
-                .then((res) => res.json())
-                .then((response) => {
-                  console.log(response);
-                })
-                .catch((error) => console.error('Error:', error));
-            }
+    // 1. On regare si le produit cadeau est présent ou non
+    var productFound = false;
+    var productLine = 0;
+    var url = '/cart.js';
+    fetch(url, { method: 'GET' })
+      .then((res) => res.json())
+      .then((response) => {
+        const cart = response;
+        var freeProductItem = null;
+        for (let index = 0; index < cart.items.length; index++) {
+          if (cart.items[index].variant_id == 54770955845957) {
+            productFound = true;
+            productLine = index;
+            freeProductItem = cart.items[index];
           }
-        })
-        .catch((error) => console.error('Error:', error));
+        }
 
+        console.log(productFound);
+        console.log(productLine);
+        console.log(freeProductItem);
+        console.log(cart);
+
+        // 2. Dans un premier temps, on retire le produit cadeau du panier
+        if (productFound && cart.total_price >= 10000) {
+          fetch(window.Shopify.routes.root + 'cart/update.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              updates: {
+                54770955845957: 1,
+              },
+            }),
+          })
+            .then((res) => res.json())
+            .then((resJson) => {})
+            .catch((error) => console.error('Error:', error));
+        }
+        if (productFound && cart.total_price < 10000) {
+          fetch(window.Shopify.routes.root + 'cart/update.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              updates: {
+                54770955845957: 0,
+              },
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error('Error:', error));
+        }
+        if (!productFound && cart.total_price >= 10000) {
+          // 4. Si il n'est pas présent, l'ajouter au panier
+          fetch(routes.cart_add_url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error('Error:', error));
+        } else if (!productFound && cart.total_price >= 10000) {
+          // 5. S'il n'est pas présent et que le total est > 100€, on l'ajoute au panier
+          fetch(routes.cart_add_url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((res) => {
+              return res.json();
+            })
+            .catch((error) => console.error('Error:', error));
+        }
+
+        // Rafaichissement du panier
+        const this_cartDrawer = document.querySelector('cart-drawer');
+        this_cartDrawer.refresh(true);
+      })
+      .catch((error) => console.error('Error:', error));
+  }
+
+  connectedCallback() {
+    // this.addFreeProduct();
+    this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
       if (event.source === 'cart-items') {
         return;
       }
@@ -132,6 +186,7 @@ class CartItems extends HTMLElement {
   }
 
   onChange(event) {
+    this.addFreeProduct();
     this.validateQuantity(event);
   }
 
